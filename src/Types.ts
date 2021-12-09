@@ -1,0 +1,81 @@
+export enum PresentationMode{
+    Wiew,
+    Edit
+}
+
+export enum FigureType{
+    Circle,
+    Triangle,
+    Rectangle
+}
+
+export enum TypeElement{
+    Text,
+    Image,
+    Figure
+}
+
+export type App = {
+    command_history: History,
+    presentation: Presentation,
+    mode: PresentationMode,
+}
+
+export type Presentation = {
+    presentation_name: string,
+    active_slide: number,
+    slide_list: Slide[],
+    select_slides: number[],
+}
+
+export type History = {
+
+}
+
+export type Slide = {
+    backgrond: Background,
+    elements: Element[],
+    active_elements: Number[],
+}
+
+export type Background = {
+    src: string,
+    color: string,
+}
+
+export type Position = {
+    x: number,
+    y: number,
+}
+
+export type Size = {
+    h: number,
+    w: number,
+}
+
+export type TextObj = {
+    type: TypeElement.Text,
+    text: string,
+    text_color: string,
+    font: string,
+    font_size: number,
+}
+
+export type ImageObj = {
+    type: TypeElement.Image,
+    src: string
+}
+
+export type FigureObj = {
+    type: TypeElement.Figure,
+    border_color: string,
+    border_size: number,
+    figure_type: FigureType,
+}
+
+export type Element = {
+    size: Size,
+    position: Position,
+    background_color: string,
+    data: TextObj | ImageObj | FigureObj,
+}
