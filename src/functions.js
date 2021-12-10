@@ -32,22 +32,22 @@ function Edit_Presentation() {}
 function Change_Name(presentation, name) {}
 
 /**
- * @param {num[]} element
+ * @param {num[]} elements
  * @param {Slide} from_slide
- * @param {Slide} to_slide
- * @return {Slide} 
  */
-function Copy(element, target_slide) {}
+function Copy(elements, from_slide) {}
 
 /**
- * @param {num[]} element
+ * @param {num[]} elements
  * @param {Slide} from_slide
- * @param {Slide} to_slide
- * @return {Slide} 
  */
-function Cut() {}
+function Cut(elements, from_slide) {}
 
-function Paste() {}
+/**
+ * @param {num[]} elements
+ * @param {Slide} to_slide
+ */
+function Paste(elements, to_slide) {}
 
 /**
  * @param {Element} element
@@ -114,10 +114,10 @@ function Add_Slide(presentation, new_slide) {}
 
 /**
  * @param {Presentation} presentation
- * @param {num[]} slides
+ * @param {num} slide
  * @return {Presentation}
  */
-function Delete_Slide(presentation, slides) {}
+function Delete_Slide(presentation, slide) {}
 
 /**
  * @param {Presentation} presentation
