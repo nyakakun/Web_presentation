@@ -33,6 +33,7 @@ export type History = {
 }
 
 export type Slide = {
+    id: string,
     backgrond: Background,
     elements: Element[],
     active_elements: Number[],
@@ -74,6 +75,7 @@ export type FigureObj = {
 }
 
 export type Element = {
+    id: string,
     size: Size,
     position: Position,
     background_color: string,
