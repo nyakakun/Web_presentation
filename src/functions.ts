@@ -100,15 +100,25 @@ export function Change_Background_Image(slide: Slide, new_src: string) {
 }
 
 /**
- * @param {Slide} slide
+ * @param {Presentation} presentation
  * @param {Element} element
- * @return {Slide}  
+ * @return {Presentation}  
  */
-export function Add_Element(slide: Slide, element: Element): Slide {
-    let temp_elements = [...slide.elements]
-    temp_elements.push(element)
+export function Add_Element(presentation: Presentation, element: Element): Presentation {
+
+    var TempPresentation: Presentation = {...presentation}
+    var TempSlideList: Slide[] = {...TempPresentation.slide_list}
+    var TempSlide: Slide = {...TempSlideList[TempPresentation.select_slides[0]]}
+    let TempElements: Element[] = [...TempSlide.elements]
+
+    TempElements.push(element)
+
+    TempSlide.elements = TempElements
+    TempSlideList[TempPresentation.select_slides[0]] = TempSlide
+    TempPresentation.slide_list = TempSlideList
+
     return {
-        ...slide, elements: temp_elements
+        ...TempPresentation
     }
 }
 
@@ -117,21 +127,21 @@ export function Add_Element(slide: Slide, element: Element): Slide {
  * @param {Element} element
  * @return {Slide}
  */
-export function Delete_Elemnt(slide: Slide, element: Element) {}
+export function Delete_Elemnts(slide: Slide, element: Element) {}
 
 /**
  * @param {Element} element
  * @param {Position} new_pos
  * @return {Element}
  */
-export function Move_Element(element: Element, new_pos: Position) {} 
+export function Move_Elements(element: Element, new_pos: Position) {} 
 
 /**
  * @param {Element} element
  * @param {Size} new_size
  * @return {Element}
  */
-export function Resize_Element(element: Element, new_size: Size): Element {
+export function Resize_Elements(element: Element, new_size: Size): Element {
         return {
             ...element, size: new_size
         }

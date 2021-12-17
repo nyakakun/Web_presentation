@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import {Element, FigureType, TypeElement} from "./Types"
+import {Element, FigureType, TypeElement, Presentation, Slide} from "./Types"
 import {app} from "./test_data"
 import {Change_Name,  Add_Element} from "./functions"
 import {v4 as uuidv4} from 'uuid';
@@ -26,7 +26,7 @@ var TempElement: Element = {
     x: 100,
     y: 200
   },
-  background_color: 'ХУЙ}',
+  background_color: 'ДА_НЕТ_11011010_00100101',
   data:{
     type: TypeElement.Figure,
     border_color: '399932',
@@ -35,6 +35,6 @@ var TempElement: Element = {
   }
 }
 
-//app.presentation.slide_list[app.presentation.select_slides[0]] = Add_Element(app.presentation.slide_list[app.presentation.select_slides[0]], TempElement)
+app.presentation = Add_Element(app.presentation, TempElement)
 
 console.log(app.presentation);
