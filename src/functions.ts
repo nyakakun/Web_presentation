@@ -1,4 +1,4 @@
-import { Presentation, Slide, Size, Position, Element } from "./Types"
+import { Presentation, Slide, Size, Position, Element, Background, TypeElement, TextObj} from "./Types"
 //import { v4 as uuidv4 } from 'uuid'
 
 /**
@@ -32,9 +32,17 @@ export function Edit_Presentation() {}
  * @param {string} name
  * @return {Presentation} 
  */
+export function Change_Name(presentation: Presentation, name: string): Presentation {
+    return {
+        ...presentation, presentation_name: name
+    }
+}
+
+/*
 export function Change_Name(presentation: Presentation, name: string) {
     presentation.presentation_name = name;
 }
+*/
 
 /**
  * @param {number[]} elements
@@ -59,28 +67,50 @@ export function Paste(elements: number[], to_slide: Slide) {}
  * @param {string} src
  * @return {Element}
  */
-export function Change_Image(element: Element, src: string) {}
+export function Change_Image(element: Element, src: string) {
+
+}
 
 /**
  * @param {Slide} slide
- * @param {string} color
+ * @param {string} new_color
  * @return {Slide}
  */
-export function Change_Background_Color(slide: Slide, color: string) {}
+export function Change_Background_Color(slide: Slide, new_color: string): Slide {
+    return{
+        ...slide, background: {
+            ...slide.background,
+            color: new_color
+        }
+    }
+}
 
 /**
  * @param {Slide} slide
- * @param {string} src
+ * @param {string} new_src
  * @return {Slide}
  */
-export function Change_Background_Image(slide: Slide, src: string) {}
+export function Change_Background_Image(slide: Slide, new_src: string) {
+    return{
+        ...slide, background: {
+            ...slide.background,
+            src: new_src
+        }
+    }
+}
 
 /**
  * @param {Slide} slide
  * @param {Element} element
  * @return {Slide}  
  */
-export function Add_Element(slide: Slide, element: Element) {}
+export function Add_Element(slide: Slide, element: Element): Slide {
+    let temp_elements = [...slide.elements]
+    temp_elements.push(element)
+    return {
+        ...slide, elements: temp_elements
+    }
+}
 
 /**
  * @param {Slide} slide
@@ -101,7 +131,11 @@ export function Move_Element(element: Element, new_pos: Position) {}
  * @param {Size} new_size
  * @return {Element}
  */
-export function Resize_Element(element: Element, new_size: Size) {}
+export function Resize_Element(element: Element, new_size: Size): Element {
+        return {
+            ...element, size: new_size
+        }
+}
 
 /**
  * @param {Presentation} presentation
@@ -144,38 +178,79 @@ export function Change_Active_Slide(presentation: Presentation, target_slide: Sl
  * @param {string} new_text
  * @return {Element}
  */
-export function Change_Text(element: Element, new_text: string) {}
+export function Change_Text(element: Element, new_text: string): Element {
+    if(element.data.type == TypeElement.Text)
+        return{
+            ...element, data: {
+                ...element.data,
+                text: new_text
+            }
+        }
+        
+    return{...element}
+}
 
 /**
  * @param {Element} element
  * @param {string} new_text
  * @return {Element}
  */
-export function Change_Font_Text(element: Element, new_text: string) {} 
+export function Change_Font_Text(element: Element, new_text: string): Element {
+    if(element.data.type == TypeElement.Text)
+        return {
+            ...element, data: {
+                ...element.data, 
+                font: new_text
+        } 
+    }
+    return{...element}
+} 
 
 /**
  * @param {Element} element
  * @param {number} new_size
  * @return {Element}
  */
-export function Change_Size_Text(element: Element, new_size: number) {}
+export function Change_Size_Text(element: Element, new_size: number) {
+    if(element.data.type == TypeElement.Text)
+    return{
+        ...element, data: {
+            ...element.data,
+            font_size: new_size
+        }
+    }
+    
+return{...element}
+
+}
 
 /**
  * @param {Element} element
  * @param {number} new_size
  * @return {Element}
  */
-export function Change_Border_Size(element: Element, new_size: number) {}
-
+export function Change_Border_Size(element: Element, new_size: number): Element {
+    if(element.data.type == TypeElement.Figure)
+        return{
+            ...element, data: {
+                ...element.data,
+                border_size: new_size
+            }
+        }
+    return{...element}
+}
 /**
  * @param {Element} element
- * @param {string} color
+ * @param {string} new_color
  * @return {Element}
  */
-export function Change_Border_Color(element: Element, color: string) {}
-
-/*export function uuidv4() {
-    return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
-        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-    );
-}*/
+export function Change_Border_Color(element: Element, new_color: string): Element {
+    if(element.data.type == TypeElement.Figure)
+        return{
+            ...element, data: {
+                ...element.data,
+                border_color: new_color
+            }
+        }
+    return{...element}
+}

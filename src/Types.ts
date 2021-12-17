@@ -23,7 +23,6 @@ export type App = {
 
 export type Presentation = {
     presentation_name: string,
-    active_slide: number,
     slide_list: Slide[],
     select_slides: number[],
 }
@@ -34,9 +33,9 @@ export type History = {
 
 export type Slide = {
     id: string,
-    backgrond: Background,
+    background: Background,
     elements: Element[],
-    active_elements: Number[],
+    active_elements: number[],
 }
 
 export type Background = {

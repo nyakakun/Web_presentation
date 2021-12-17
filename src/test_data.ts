@@ -1,13 +1,12 @@
 import {App, FigureType, PresentationMode, TypeElement} from './Types'
 
-const app: App = {
+export var app: App = {
 	presentation: {
 		presentation_name: 'Fisrt present',
-		active_slide: 0,
 		slide_list: [
 			{
 				id: '28df1b3e-0645-496c-a3a6-07ff532d946f',
-				backgrond: {
+				background: {
 					src: '',
 					color: '000000',
 				},
@@ -52,7 +51,7 @@ const app: App = {
 			},
 			{
 				id: '6a4798bb-1b96-4ce3-a9f3-a6047e4ce20f',
-				backgrond: {
+				background: {
 					src: '',
 					color: '000000',
 				},
