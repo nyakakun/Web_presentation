@@ -28,7 +28,8 @@ export type Presentation = {
 }
 
 export type History = {
-
+    history: Presentation[]
+    Last: number
 }
 
 export type Slide = {

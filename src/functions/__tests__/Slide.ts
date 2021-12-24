@@ -1,0 +1,303 @@
+import {Presentation, Element, TypeElement, FigureType, App} from '../../Types'
+import {Add_Element, Change_Background_Color, Change_Background_Image, Delete_Elements} from '../WorkWith_Slide'
+import {Change_Text, Change_Image} from '../WorkWith_Element'
+import {v4 as uuidv4} from 'uuid'
+
+export function TEST() {
+    TestAddElement()
+    TestChangeBackColorSlide()
+    TestChangeBackImageSlide()
+    TestDeleteElements()
+
+    TestChangeText()
+}
+
+function TestChangeText(){
+    const NewImage: string = 'http://new_link_image.meow'
+
+    const BeforePresentation: Presentation = {
+        presentation_name: '',
+        slide_list: [
+            {
+                id: '',
+                background: {
+                    color: '000000',
+                    src: ''
+                },
+                elements: [{
+                    id: '',
+                    size: {
+                        h: 10,
+                        w: 100
+                    },
+                    position:{
+                        x: 100,
+                        y: 200
+                    },
+                    background_color: 'ff00ff',
+                    data:{
+                        type: TypeElement.Text,
+                        font: 'Arial',
+                        font_size: 12,
+                        text: 'Nyaharo',
+                        text_color: 'ff00ff'
+                    }
+                }],
+                active_elements: [0]
+            }
+        ],
+        select_slides: [0]
+    }
+
+    const AfterPresentation: Presentation = {
+        presentation_name: '',
+        slide_list: [
+            {
+                id: '',
+                background: {
+                    color: '000000',
+                    src: ''
+                },
+                elements: [{
+                    id: '',
+                    size: {
+                        h: 10,
+                        w: 100
+                    },
+                    position:{
+                        x: 100,
+                        y: 200
+                    },
+                    background_color: 'ff00ff',
+                    data:{
+                        type: TypeElement.Text,
+                        font: 'Arial',
+                        font_size: 12,
+                        text: 'Nyaharo',
+                        text_color: 'ff00ff'
+                    }
+                }],
+                active_elements: [0]
+            }
+        ],
+        select_slides: [0]
+    }
+
+    //console.log(Change_Text(BeforePresentation))
+    //console.log(AfterPresentation)
+    console.log('Delete_Elements: ', JSON.stringify(Change_Text(BeforePresentation, NewImage)) === JSON.stringify(AfterPresentation))
+
+    Change_Text
+}   
+
+function TestDeleteElements(){
+
+    const BeforePresentation: Presentation = {
+        presentation_name: '',
+        slide_list: [
+            {
+                id: '',
+                background: {
+                    color: '000000',
+                    src: ''
+                },
+                elements: [{
+                    id: '',
+                    size: {
+                        h: 10,
+                        w: 100
+                    },
+                    position:{
+                        x: 100,
+                        y: 200
+                    },
+                    background_color: 'ff00ff',
+                    data:{
+                        type: TypeElement.Figure,
+                        border_color: '399932',
+                        border_size: 4,
+                        figure_type: FigureType.Circle
+                    }
+                }],
+                active_elements: [0]
+            }
+        ],
+        select_slides: [0]
+    }
+
+    const AfterPresentation: Presentation = {
+        presentation_name: '',
+        slide_list: [
+            {
+                id: '',
+                background: {
+                    color: '000000',
+                    src: ''
+                },
+                elements: [],
+                active_elements: []
+            }
+        ],
+        select_slides: [0]
+    }
+
+    //console.log(Delete_Elements(BeforePresentation))
+    //console.log(AfterPresentation)
+    console.log('Delete_Elements: ', JSON.stringify(Delete_Elements(BeforePresentation)) === JSON.stringify(AfterPresentation))
+}
+
+function TestChangeBackImageSlide(){
+    const NewBackImage = 'http://google.com/favico.ico'
+
+    const BeforePresentation: Presentation = {
+        presentation_name: '',
+        slide_list: [
+            {
+                id: '',
+                background: {
+                    color: '000000',
+                    src: ''
+                },
+                elements: [],
+                active_elements: []
+            }
+        ],
+        select_slides: [0]
+    }
+
+    const AfterPresentation: Presentation = {
+        presentation_name: '',
+        slide_list: [
+            {
+                id: '',
+                background: {
+                    color: '000000',
+                    src: 'http://google.com/favico.ico'
+                },
+                elements: [],
+                active_elements: []
+            }
+        ],
+        select_slides: [0]
+    }
+
+    //console.log(Change_Background_Image(BeforePresentation, NewBackColor))
+    //console.log(AfterPresentation)
+    console.log('Change_Background_Image: ', JSON.stringify(Change_Background_Image(BeforePresentation, NewBackImage)) === JSON.stringify(AfterPresentation))
+}
+
+function TestChangeBackColorSlide(){
+
+    const NewBackColor = '2584ff'
+
+    const BeforePresentation: Presentation = {
+        presentation_name: '',
+        slide_list: [
+            {
+                id: '',
+                background: {
+                    color: '000000',
+                    src: ''
+                },
+                elements: [],
+                active_elements: []
+            }
+        ],
+        select_slides: [0]
+    }
+
+    const AfterPresentation: Presentation = {
+        presentation_name: '',
+        slide_list: [
+            {
+                id: '',
+                background: {
+                    color: '2584ff',
+                    src: ''
+                },
+                elements: [],
+                active_elements: []
+            }
+        ],
+        select_slides: [0]
+    }
+    
+    //console.log(Change_Background_Color(BeforePresentation, NewBackColor))
+    //console.log(AfterPresentation)
+    console.log('Change_Background_Color: ', JSON.stringify(Change_Background_Color(BeforePresentation, NewBackColor)) === JSON.stringify(AfterPresentation))
+}
+
+function TestAddElement() {
+    
+    const NewElement: Element = {
+        id: '',
+        size: {
+            h: 10,
+            w: 100
+        },
+        position:{
+            x: 100,
+            y: 200
+        },
+        background_color: 'ff00ff',
+        data:{
+            type: TypeElement.Figure,
+            border_color: '399932',
+            border_size: 4,
+            figure_type: FigureType.Circle
+        }
+    }
+
+    const BeforePresentation: Presentation = {
+        presentation_name: '',
+        slide_list: [
+            {
+                id: '',
+                background: {
+                    color: '000000',
+                    src: ''
+                },
+                elements: [],
+                active_elements: []
+            }
+        ],
+        select_slides: [0]
+    }
+
+    const AfterPresentation: Presentation = {
+        presentation_name: '',
+        slide_list: [
+            {
+                id: '',
+                background: {
+                    color: '000000',
+                    src: ''
+                },
+                elements: [{
+                    id: '',
+                    size: {
+                        h: 10,
+                        w: 100
+                    },
+                    position:{
+                        x: 100,
+                        y: 200
+                    },
+                    background_color: 'ff00ff',
+                    data:{
+                        type: TypeElement.Figure,
+                        border_color: '399932',
+                        border_size: 4,
+                        figure_type: FigureType.Circle
+                    }
+                }],
+                active_elements: [0]
+            }
+        ],
+        select_slides: [0]
+    }
+    
+    //console.log(JSON.stringify(Add_Element(BeforePresentation, NewElement)))
+    //console.log(JSON.stringify(AfterPresentation))
+    console.log('Add_Element: ', JSON.stringify(Add_Element(BeforePresentation, NewElement)) === JSON.stringify(AfterPresentation))
+}
