@@ -8,7 +8,7 @@ import {Add_Element, Change_Background_Color} from "./functions/WorkWith_Slide"
 import {Change_Name} from "./functions/WorkWith_Presentation"
 import {v4 as uuidv4} from 'uuid';
 
-import {TEST} from './functions/__tests__/Slide'
+import {TEST} from './functions/tests/test'
 
 ReactDOM.render(
   <div></div>,

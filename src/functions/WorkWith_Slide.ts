@@ -1,5 +1,4 @@
 import { Presentation, Slide, Size, Position, Element, Background, TypeElement, TextObj} from "../Types"
-import { v4 as uuidv4 } from 'uuid'
 
 /**
  * @param {Presentation} presentation
@@ -74,27 +73,6 @@ export function Add_Element(presentation: Presentation, element: Element): Prese
 }
 
 /**
- * @param {number[]} elements
- * @param {Slide} from_slide
-export function Copy_Elements(elements: number[], from_slide: Slide) {}
- */
-
-/**
- * @param {number[]} elements
- * @param {Slide} from_slide
-export function Cut_Elements(presentation: number[], from_slide: Slide) {
-    //Copy_Elements(presentation, arguments[1])
-    //Delete_Elemnts(presentation, arguments[1])
-}
- */
-
-/**
- * @param {number[]} elements
- * @param {Slide} to_slide
-export function Paste_Elements(elements: number[], to_slide: Slide) {}
- */
-
-/**
  * @param {Presentation} presentation
  * @return {Presentation}
  */
@@ -120,3 +98,24 @@ export function Delete_Elements(presentation: Presentation): Presentation {
         ...temp_presentation
     }
 }
+
+/**
+ * @param {number[]} elements
+ * @param {Slide} from_slide
+export function Copy_Elements(elements: number[], from_slide: Slide) {}
+ */
+
+/**
+ * @param {number[]} elements
+ * @param {Slide} from_slide
+export function Cut_Elements(presentation: number[], from_slide: Slide) {
+    //Copy_Elements(presentation, arguments[1])
+    //Delete_Elemnts(presentation, arguments[1])
+}
+ */
+
+/**
+ * @param {number[]} elements
+ * @param {Slide} to_slide
+export function Paste_Elements(elements: number[], to_slide: Slide) {}
+ */

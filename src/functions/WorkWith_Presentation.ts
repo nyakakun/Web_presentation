@@ -1,5 +1,4 @@
 import { Presentation, Slide, Size, Position, Element, Background, TypeElement, TextObj} from "../Types"
-import { v4 as uuidv4 } from 'uuid'
 /**
  * @param {Presentation} presentation
  * @param {string} name
@@ -10,20 +9,6 @@ import { v4 as uuidv4 } from 'uuid'
         ...presentation, presentation_name: name
     }
 }
-
-/*
-export function Change_Name(presentation: Presentation, name: string) {
-    presentation.presentation_name = name;
-}
-*/
-
-
-/**
- * @param {Presentation} presentation
- * @param {Slide} new_slide
- * @return {Presentation}
-export function Duplicate_Slide(presentation: Presentation, new_slide: Slide) {}
- */
 
 /**
  * @param {Presentation} presentation
@@ -85,3 +70,11 @@ export function Change_Select_Slide(presentation: Presentation, target_slide: nu
         ...presentation, select_slides: target_slide
     }
 }
+
+
+/**
+ * @param {Presentation} presentation
+ * @param {Slide} new_slide
+ * @return {Presentation}
+export function Duplicate_Slide(presentation: Presentation, new_slide: Slide) {}
+ */

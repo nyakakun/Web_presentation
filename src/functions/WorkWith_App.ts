@@ -1,5 +1,4 @@
 import { Presentation, Slide, Size, Position, Element, Background, TypeElement, TextObj} from "../Types"
-import { v4 as uuidv4 } from 'uuid'
 
 /**
  * @param {Presentation} presentation
