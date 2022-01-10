@@ -87,7 +87,7 @@ function TestChangeText(){
     //console.log(AfterPresentation)
     console.log('Delete_Elements: ', JSON.stringify(Change_Text(BeforePresentation, NewImage)) === JSON.stringify(AfterPresentation))
 
-    Change_Text
+    //Change_Text
 }   
 
 function TestDeleteElements(){

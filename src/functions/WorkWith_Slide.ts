@@ -5,8 +5,8 @@ import { Presentation, Slide, Size, Position, Element, Background, TypeElement, 
  * @param {string} new_color
  * @return {Presentation}
  */
- export function Change_Background_Color(presentation: Presentation, new_color: string): Presentation {
-    
+ export function Change_Background_Color_Slide(presentation: Presentation, new_color: string): Presentation {
+    console.log('HUITA')
     let temp_presentation: Presentation = {...presentation}
     let temp_slide_list: Slide[] = [...temp_presentation.slide_list]
     temp_presentation.select_slides.forEach(
@@ -30,7 +30,7 @@ import { Presentation, Slide, Size, Position, Element, Background, TypeElement, 
  * @param {string} new_src
  * @return {Presentation}
  */
-export function Change_Background_Image(presentation: Presentation, new_src: string) {
+export function Change_Background_Image_Slide(presentation: Presentation, new_src: string) {
    
     let temp_presentation: Presentation = {...presentation}
     let temp_slide_list: Slide[] = [...temp_presentation.slide_list]

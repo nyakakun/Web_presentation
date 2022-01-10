@@ -138,7 +138,7 @@ export function Change_Border_Size(presentation: Presentation, new_size: number)
  * @param {string} new_color
  * @return {Presentation}
  */
-export function Change_Border_Color(presentation: Presentation, new_color: string): Presentation {
+export function Change_Border_Color_Element(presentation: Presentation, new_color: string): Presentation {
    
     let temp_presentation: Presentation = {...presentation}
     let temp_slide_list: Slide[] = [...temp_presentation.slide_list]
@@ -165,7 +165,7 @@ export function Change_Border_Color(presentation: Presentation, new_color: strin
  * @param {string} new_color
  * @return {Presentation}
  */
-export function Change_Background_Color(presentation: Presentation, new_color: string): Presentation {
+export function Change_Background_Color_Element(presentation: Presentation, new_color: string): Presentation {
    
     let temp_presentation: Presentation = {...presentation}
     let temp_slide_list: Slide[] = [...temp_presentation.slide_list]
@@ -173,7 +173,9 @@ export function Change_Background_Color(presentation: Presentation, new_color: s
     let temp_elements: Element[] = [...temp_slide.elements]
     temp_presentation.select_slides.forEach(
         function(item) {
-            let temp_element: Element = {...temp_elements[item], background_color: new_color}
+            let temp_element: Element = {...temp_elements[item]}
+            if(temp_element.data.type == TypeElement.Figure)
+                temp_element.data = {...temp_element.data, background_color: new_color}
             temp_elements[item] = temp_element
         }
     )

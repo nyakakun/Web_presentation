@@ -54,11 +54,29 @@ export function Delete_Slide(presentation: Presentation): Presentation {
 
 /**
  * @param {Presentation} presentation
- * @param {number} target_slide
  * @param {number} new_pos
  * @return {Presentation}
  */
-export function Move_Slide(presentation: Presentation, target_slide: Slide, new_pos: number) {} 
+export function Move_Slide(presentation: Presentation, new_pos: number) {
+    function Compare(a: number, b: number) {if(a > b){return 1} else if(a == b){return 0} else {return -1}}
+    let temp_presentation: Presentation = {...presentation}
+    let temp_select_slides: number[] = [...temp_presentation.select_slides].sort(Compare)
+    let temp_slide_list: Slide[] = []
+    temp_presentation.slide_list.forEach(
+        function(item, index){
+            if(new_pos == index){
+                temp_select_slides.forEach(
+                    function(item){
+                        temp_slide_list.push(temp_presentation.slide_list[item])
+                    }
+                )
+            }
+            if(temp_select_slides.indexOf(index) < 0){
+                temp_slide_list.push(item)
+            }
+        }
+    )
+} 
 
 /**
  * @param {Presentation} presentation

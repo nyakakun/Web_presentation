@@ -71,6 +71,7 @@ export type FigureObj = {
     type: TypeElement.Figure,
     border_color: string,
     border_size: number,
+    background_color: string,
     figure_type: FigureType,
 }
 
@@ -78,6 +79,5 @@ export type Element = {
     id: string,
     size: Size,
     position: Position,
-    background_color: string,
     data: TextObj | ImageObj | FigureObj,
 }
