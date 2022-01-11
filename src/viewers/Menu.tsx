@@ -1,7 +1,7 @@
 import React from 'react';
+import './css/Menu.css'
 import { Load_Presentation, Save_Presentation } from '../functions/WorkWith_App';
 import { App, Presentation } from '../Types';
-import '../css/Menu.css'
 
 export function Menu(props: any){
     let app: App = props.app

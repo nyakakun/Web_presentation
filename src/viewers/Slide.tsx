@@ -1,272 +1,160 @@
 import React, { BaseSyntheticEvent, MouseEventHandler, useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
-import { Presentation, Element, TypeElement, FigureType, Slide, App } from '../Types';
+import './css/Slide.css';
+import { Presentation, Element, TypeElement, FigureType, Slide, App, Background } from '../Types';
+import { Config, GetPanelType } from './Config';
+import { v4 as uuidv4 } from 'uuid';
+import { Add_State_Updater_Elements, Add_State_Updater_Slide, Update_State, Update_State_Config, Update_State_Config_Inputs } from '../StateChangers';
+import { scale } from '../AppConfigs'
 
-import styles from './Button.module.css';
-
-
-export function SlideSVG(app: App){
-    const [menuSwitcher, setMenuSwitcher] = useState(true);
-    const handleToggleView = () => setMenuSwitcher(!menuSwitcher);
-    return (
-        <div>
-            {
-                menuSwitcher
-                ? <ElementListTool foo={handleToggleView}/>
-                : <ReorderListTool foo={handleToggleView}/>
-            }
-        </div>
-    );
-}
-
-type ElementListToolProps = {
-    foo: () => void | undefined
-}
-
-export function ElementListTool(props: ElementListToolProps): JSX.Element {
-    return <div>
-        <Button text="Undo" state="disabled" contentType="icon" content={{hotkeyInfo: ""}} foo={() => undefined}/>
-        <VerticalLine />
-        <Button text="Redo" state="disabled" contentType="icon" content={{hotkeyInfo: ""}} foo={() => undefined}/>
-        <VerticalLine />
-        <Button  text="Reorder" state="disabled" contentType="icon" content={{hotkeyInfo: ""}} foo={props.foo}/>
-        <VerticalLine />
-        <Button text="Opacity" state="disabled" contentType="icon" content={{hotkeyInfo: ""}} foo={() => undefined}/>
-        <VerticalLine />
-        <Button text="Delete" state="disabled" contentType="icon" content={{hotkeyInfo: ""}} foo={() => undefined}/>
-        <VerticalLine />
-        <Button text="Fullscreen" state="disabled" contentType="icon" content={{hotkeyInfo: ""}} foo={() => undefined}/>
-    </div>;
-}
-
-export function VerticalLine(): JSX.Element {
-    return (
-        <div className={styles.vertical_line}></div>
-    );
-}
-
-type ReorderListToolProps = {
-    foo: () => void | undefined
-}
-
-export function ReorderListTool(props: ReorderListToolProps): JSX.Element {
-    return <div>
-        <Button text="Backward" state="disabled" contentType="icon" content={{hotkeyInfo: ""}} foo={props.foo}/>
-        <VerticalLine />
-        <Button text="Back" state="disabled" contentType="icon" content={{hotkeyInfo: ""}} foo={props.foo}/>
-        <VerticalLine />
-        <Button text="Forward" state="disabled" contentType="icon" content={{hotkeyInfo: ""}} foo={props.foo}/>
-        <VerticalLine />
-        <Button text="Front" state="disabled" contentType="icon" content={{hotkeyInfo: ""}} foo={props.foo}/>
-    </div>
-}
-
-type ButtonProps = {
-    text: string,
-    state: 'disabled' | 'active' | 'focused' | 'default',
-    contentType: 'text' | 'icon' | 'leftSideIconAndTextInSubMenu' | 'rightSideIconAndTextInSubMenu' | 'rightSideHotKeyInfoAndTextInSubMenu' | 'textInSubMenu',
-    content: {
-        hotkeyInfo: string,
-    } | undefined,
-    foo: () => void | undefined
-}
-
-export function Button(props: ButtonProps = {
-    text: '',
-    state: 'disabled',
-    contentType: 'text',
-    content: undefined,
-    foo: () => {},
-}): JSX.Element {
-    const { text, content, contentType, state, foo } = props;
-
-    const onClickHandler = (_: BaseSyntheticEvent) => {
-        if (foo !== undefined) {
-            foo();
-        }
-    }
-
-    const [buttonStyle, setButtonStyle] = useState(styles.default);
-
-    useEffect(() => {
-        if (state !== 'default') {
-            const style = (contentType === 'icon')
-                ? (state === 'disabled') ? styles.icon : (state === 'active') ? styles['icon-pressed'] : styles['icon-focused']
-                :
-                (contentType === 'leftSideIconAndTextInSubMenu')
-                    ? (state === 'disabled') ? styles.button : (state === 'active') ? styles['button-pressed'] : styles['button-focused']
-                    :
-                    (contentType === 'rightSideIconAndTextInSubMenu')
-                        ? (state === 'disabled') ? styles.button : (state === 'active') ? styles['button-pressed'] : styles['button-focused']
-                        :
-                        (contentType === 'rightSideHotKeyInfoAndTextInSubMenu')
-                            ? (state === 'disabled') ? styles.button : (state === 'active') ? styles['button-pressed'] : styles['button-focused']
-                            :
-                            (contentType === 'textInSubMenu')
-                                ? (state === 'disabled') ? styles['button-in-submenu'] : (state === 'active') ? styles['button-pressed'] : styles['button-focused']
-                                :
-                                (contentType === 'text')
-                                    ? (state === 'disabled') ? styles.button : (state === 'active') ? styles['button-pressed'] : styles['button-focused']
-                                        : styles.button;
-            setButtonStyle(style);
-        }
-    }, [state, contentType]);
-
-    const [preventingMouseUp, setPreventMouseUpStatus] = useState(false);
-
-    const onMouseDownHandler = (state === 'default')
-        ? (_: BaseSyntheticEvent) => {
-            setButtonStyle(styles['default-pressed']);
-        }
-        : (_: BaseSyntheticEvent) => {
-            return undefined;
-        }
-
-    const onMouseUpHandler = (state === 'default')
-        ? (event: BaseSyntheticEvent) => {
-            setButtonStyle(styles.default);
-            if (preventingMouseUp) {
-                setPreventMouseUpStatus(false);
-                event.target.blur();
-            } else {
-                setPreventMouseUpStatus(true);
-            }
-        }
-        : (_: BaseSyntheticEvent) => {
-            return undefined;
-        }
-
-    const button: JSX.Element =
-        <button
-            className={buttonStyle}
-            onMouseDown={onMouseDownHandler}
-            onMouseUp={onMouseUpHandler}
-            onClick={onClickHandler}
-        >
-            {text}
-            {(content !== undefined)
-                ?   <div className="hotkey-info">
-                        {content.hotkeyInfo}
-                    </div>
-                : ''
-            }
-        </button>;
-
-    return button;
-}
-
-
-
-
-//import { Config } from './Config';
-/*
-export function SlideSVG(app: App){
-    let presentation = app.presentation
+export function SlideSVG(props: {app: App}){
+    let presentation = props.app.presentation
     let slide = presentation.slide_list[presentation.select_slides[0]]
-    //let StateChanger: Map <number, React.Dispatch<React.SetStateAction<Element>>> = new Map()
-    //let state = useState(slide)
-    //state[1](slide)
-    function on_click(event: React.MouseEvent){
-        if(event.ctrlKey){
-            slide.active_elements.push(Number(event.currentTarget.getAttribute('data-index')))
-        }else{
-            slide.active_elements = [Number(event.currentTarget.getAttribute('data-index'))]
+
+    const [state_slide, Change_State_Slide] = useState(slide)
+
+    Add_State_Updater_Slide(state_slide.id, Change_State_Slide)
+    presentation.slide_list[presentation.select_slides[0]] = state_slide
+    function on_click_element(event: React.MouseEvent){
+        let index = Number(event.currentTarget.getAttribute('data-index'))
+        let active_elements = slide.active_elements
+        if(active_elements.indexOf(index) < 0){
+            if(event.ctrlKey){
+                slide.active_elements.push(index)
+                //state_slide.active_elements.push(index)
+            }else{
+                slide.active_elements = [index]
+                //state_slide.active_elements = [index]
+            }
+            Update_State_Config(GetPanelType(slide))
+            Update_State_Config_Inputs(slide.elements[index])
+            Change_State_Slide(slide)
         }
     }
-    let elements = slide.elements.map((element: Element, index: number)=>{
-        let svg_element = SVGObject(element, index, on_click)
-        //StateChanger.set(svg_element[2], svg_element[1])
-        return svg_element[0]
-    })
-    /*let elements = slide.elements.map((element: Element, index: number)=>{
-        let svg_element = Element_To_SVG(app, index)
-        //StateChanger.set(svg_element[2], svg_element[1])
+
+    function on_click_slide(event: React.MouseEvent){
+        slide.active_elements = []
+        //state_slide.active_elements = []
+        Update_State_Config(GetPanelType(slide))
+        Change_State_Slide({...slide, ...elements})
+    }
+
+    let elements = state_slide.elements.map((element: Element, index: number)=>{
+        let svg_element = <SVGObject element={element} index={index} on_click={on_click_element} />
         return svg_element
-    })*/
-/*
-    let svg_slide = <svg height={'1080px'} width={'1920px'} key={state[0].id}>{elements}</svg>
+    })
+
+    let svg_slide = (<svg height={1080 * scale} width={1920 * scale} className='Slide' key={state_slide.id}>
+            <Background_SVG background={state_slide.background} on_click={on_click_slide}/>
+            {elements}
+        </svg>)
     return svg_slide
 }
 
-function SVGObject(element: Element, index: number, on_click: React.MouseEventHandler<SVGElement>): [JSX.Element, number]{
+function Background_SVG(props: {background: Background, on_click: React.MouseEventHandler<SVGElement>}): JSX.Element{
+    return(
+        props.background.src === '' ? <rect x={0} y={0} height={'100%'} width={'100%'} fill={props.background.color} onClick={props.on_click}></rect> : <image x={0} y={0} href={props.background.src} height={'100%'} width={'100%'} onClick = {props.on_click}/>
+    )
+}
+
+function SVGObject(props: {element: Element, index: number, on_click: React.MouseEventHandler<SVGElement>}): JSX.Element{
+    const [state_element, Set_State_Element] = useState({...props.element})
+
+    Add_State_Updater_Elements(state_element.id, Set_State_Element)
+    let index = props.index
+    let On_Click = props.on_click
 
     let svg_element: JSX.Element = <></>;
-    switch (element.data.type) {
+    switch (state_element.data.type) {
         case TypeElement.Figure:
-            svg_element = Figure_SVG(element, index, on_click)
+            svg_element = <Figure_SVG element={state_element} index={index} on_click={On_Click}/>
             break;
 
         case TypeElement.Text:
+            svg_element = <Text_SVG element={state_element} index={index} on_click={On_Click}/>
+            break;
 
+        case TypeElement.Image:
+            svg_element = <Image_SVG element={state_element} index={index} on_click={On_Click}/>
+            break;
         default:
             break;
     }
 
-    return [svg_element, index]
+    return svg_element
 }
 
-function Figure_SVG(element: Element, index: number, On_Click: React.MouseEventHandler<SVGElement>): JSX.Element{
+function Figure_SVG(props:
+{
+    element: Element,
+    index: number,
+    on_click: React.MouseEventHandler<SVGElement>
+}): JSX.Element
+{
+    let element = props.element
+    let index = props.index
+    let On_Click = props.on_click
     if(element.data.type == TypeElement.Figure){
         switch (element.data.figure_type) {
             case FigureType.Circle:
-                let cx: number = element.position.x + element.size.w / 2
-                let cy: number = element.position.y + element.size.h / 2
+                let cx: number = (element.position.x + element.size.w / 2)
+                let cy: number = (element.position.y + element.size.h / 2)
 
-                let rx: number = element.size.w / 2
-                let ry: number = element.size.h / 2
+                let rx: number = (element.size.w / 2)
+                let ry: number = (element.size.h / 2)
 
                 return (
                     <ellipse
-                        key = {element.id}
-                        cx = {cx}
-                        cy = {cy}
-                        rx = {rx}
-                        ry = {ry}
+                        cx = {cx * scale}
+                        cy = {cy * scale}
+                        rx = {rx * scale}
+                        ry = {ry * scale}
                         fill = {element.data.background_color}
                         stroke = {element.data.border_color}
-                        stroke-width = {element.data.border_size}
+                        strokeWidth = {element.data.border_size * scale}
                         data-index = {index}
                         data-uid = {element.id}
-                        onClick={On_Click}
+                        onClick = {On_Click}
                     ></ellipse>
                 )
             case FigureType.Rectangle:
-
-                return (
-                    <rect 
-                        key = {element.id}
-                        x = {element.position.x} 
-                        y = {element.position.y}
-                        fill = {element.data.background_color}
-                        width = {element.size.w}
-                        height = {element.size.h}
-                        stroke = {element.data.border_color}
-                        stroke-width = {element.data.border_size}
-                        data-index = {index}
-                        onClick={On_Click}
-                    />
-                )
+                let rectangle:JSX.Element = (
+                <rect 
+                    x = {element.position.x * scale} 
+                    y = {element.position.y * scale}
+                    fill = {element.data.background_color}
+                    width = {element.size.w * scale}
+                    height = {element.size.h * scale}
+                    stroke = {element.data.border_color}
+                    strokeWidth = {element.data.border_size * scale}
+                    data-index = {index}
+                    data-uid = {element.id}
+                    onClick = {On_Click}
+                />)
+                return rectangle
             case FigureType.Triangle:
-                let angle: number = 0
-                let h: number = element.size.h
-                let w: number = element.size.w
-                let g: number = Math.sqrt(h * h + (w * w / 4))
-                let r: number = g * g / Math.sqrt(4 * g * g - w * w)
-                let PointTop: number[] = [r * Math.sin(angle) + w / 2, r * Math.cos(angle) - r]
-                let PointLeftBottom:  number[] = [  r * Math.sin(angle) - h * Math.sin(angle) + (w / 2) * Math.cos(-angle - Math.PI) + w / 2,
-                                                    r * Math.cos(angle) - h * Math.cos(angle) + (w / 2) * Math.sin(-angle - Math.PI) - r]
-                let PointRightBottom: number[] = [  r * Math.sin(angle) - h * Math.sin(angle) + (w / 2) * Math.cos(-angle) + w / 2,
-                                                    r * Math.cos(angle) - h * Math.cos(angle) + (w / 2) * Math.sin(angle + Math.PI) - r]
+                let angle: number = 180 * Math.PI / 180
+                let x: number = (element.position.x + element.data.border_size / 2) * scale
+                let y: number = (element.position.y + element.data.border_size / 2) * scale
+                let h: number = (element.size.h - element.data.border_size) * scale
+                let w: number = (element.size.w - element.data.border_size) * scale
+                let g: number = Math.sqrt(h * h + (w * w / 4)) //сторона треугольника
+                let r: number = g * g / Math.sqrt(4 * g * g - w * w) //радиус описанной окружности
+                let PointTop: number[] = [r * Math.sin(angle) + w / 2 + x, r * Math.cos(angle) + y + r]
+                let PointLeftBottom:  number[] = [  r * Math.sin(angle) - h * Math.sin(angle) + (w / 2) * Math.cos(-angle - Math.PI) + w / 2 + x,
+                                                    r * Math.cos(angle) - h * Math.cos(angle) + (w / 2) * Math.sin(-angle - Math.PI) + y + r]
+                let PointRightBottom: number[] = [  r * Math.sin(angle) - h * Math.sin(angle) + (w / 2) * Math.cos(-angle) + w / 2 + x,
+                                                    r * Math.cos(angle) - h * Math.cos(angle) + (w / 2) * Math.sin(angle + Math.PI) + y + r]
                 return (
                     <polygon
-                        key = {element.id}
                         points = {`${PointTop[0]}, ${PointTop[1]} ${PointLeftBottom[0]}, ${PointLeftBottom[1]} ${PointRightBottom[0]}, ${PointRightBottom[1]}`}
                         fill = {element.data.background_color}
                         stroke = {element.data.border_color}
-                        stroke-width = {element.data.border_size}
+                        strokeWidth = {element.data.border_size * scale}
                         fillRule = 'nonzero'
                         data-index = {index}
-                        onClick={On_Click}
+                        data-uid = {element.id}
+                        onClick = {On_Click}
                     />
                 )
             default:
@@ -276,56 +164,19 @@ function Figure_SVG(element: Element, index: number, On_Click: React.MouseEventH
     return <></>
 }
 
-
-
-
-/*
-
-
-export function BackApp(app: App){
-    let presentation: Presentation = app.presentation
-    let Active_Slide = presentation.slide_list[presentation.select_slides[0]]
-
-    let SVGElements: JSX.Element[] = []
-
-    Active_Slide.elements.forEach(
-        function(item, index){
-            //if(Active_Slide.active_elements.indexOf(index) < 0){
-                let SVG_Element: JSX.Element = Element_To_SVG(app, index)
-                SVGElements.push(SVG_Element)
-            //}
-        }
-    );
-    
-    return (
-        <svg height={'1080px'} width={'1920px'}>
-            <rect x={0} y={0} height={'1080px'} width={'1920px'} fill={'#'+Active_Slide.background.color}></rect>
-            {SVGElements}
-        </svg>
-        );
-}
-
-
-
-function Element_To_SVG(app: App, index: number): JSX.Element{
-
-    let presentation: Presentation = app.presentation
-    let slide = presentation.slide_list[presentation.select_slides[0]]
-    let element: Element = slide.elements[index]
-    function On_Click(event: React.MouseEvent){
-        /*if(event.ctrlKey){
-            slide.active_elements.push(index)
-        }else{
-            slide.active_elements = [index]
-        }
-        ReactDOM.render(
-            Config(app),
-            document.getElementById('Config')
-        )*/
-/*    }
-    switch (element.data.type) {
-        case TypeElement.Text:
-            return (
+function Text_SVG(props:
+{
+    element: Element,
+    index: number,
+    on_click: React.MouseEventHandler<SVGElement>
+}): JSX.Element
+{
+    let element = props.element
+    let index = props.index
+    let On_Click = props.on_click
+    if(element.data.type == TypeElement.Text){
+        return(
+            <>
                 <text
                     x = {element.position.x}
                     y = {element.position.y}
@@ -333,130 +184,35 @@ function Element_To_SVG(app: App, index: number): JSX.Element{
                     fontSize = {element.data.font_size}
                     fontFamily = {element.data.font}
                     data-index = {index}
-                    onClick={On_Click}
+                    data-uid = {element.id}
+                    onClick = {On_Click}
                 >
                     {element.data.text}
-                </text>)
-        case TypeElement.Figure:
-            switch (element.data.figure_type) {
-                case FigureType.Circle:
-                    let cx: number = element.position.x + element.size.w / 2
-                    let cy: number = element.position.y + element.size.h / 2
-
-                    let rx: number = element.size.w / 2
-                    let ry: number = element.size.h / 2
-
-                    return (
-                        <ellipse
-                            cx = {cx}
-                            cy = {cy}
-                            rx = {rx}
-                            ry = {ry}
-                            fill = {element.data.background_color}
-                            stroke = {element.data.border_color}
-                            stroke-width = {element.data.border_size}
-                            data-index = {index}
-                            onClick={On_Click}
-                        ></ellipse>
-                    )
-                case FigureType.Rectangle:
-
-                    return (
-                        <rect 
-                            x = {element.position.x} 
-                            y = {element.position.y}
-                            fill = {element.data.background_color}
-                            width = {element.size.w}
-                            height = {element.size.h}
-                            stroke = {element.data.border_color}
-                            stroke-width = {element.data.border_size}
-                            data-index = {index}
-                            onClick={On_Click}
-                        />
-                    )
-                case FigureType.Triangle:
-
-                    let angle: number = 0
-                    let h: number = element.size.h
-                    let w: number = element.size.w
-                    let g: number = Math.sqrt(h * h + (w * w / 4))
-                    let r: number = g * g / Math.sqrt(4 * g * g - w * w)
-                    let PointTop: number[] = [r * Math.sin(angle) + w / 2, r * Math.cos(angle) - r]
-                    let PointLeftBottom:  number[] = [  r * Math.sin(angle) - h * Math.sin(angle) + (w / 2) * Math.cos(-angle - Math.PI) + w / 2,
-                                                        r * Math.cos(angle) - h * Math.cos(angle) + (w / 2) * Math.sin(-angle - Math.PI) - r]
-                    let PointRightBottom: number[] = [  r * Math.sin(angle) - h * Math.sin(angle) + (w / 2) * Math.cos(-angle) + w / 2,
-                                                        r * Math.cos(angle) - h * Math.cos(angle) + (w / 2) * Math.sin(angle + Math.PI) - r]
-                    return (
-                        <polygon
-                            points = {`${PointTop[0]}, ${PointTop[1]} ${PointLeftBottom[0]}, ${PointLeftBottom[1]} ${PointRightBottom[0]}, ${PointRightBottom[1]}`}
-                            fill = {element.data.background_color}
-                            stroke = {element.data.border_color}
-                            stroke-width = {element.data.border_size}
-                            fillRule = 'nonzero'
-                            data-index = {index}
-                            onClick={On_Click}
-                        />)
-                default:
-                    break;
-            }
-            break;
-        case TypeElement.Image:
-            return (<image
-                x = {element.position.x}
-                y = {element.position.y}
-                href = {element.data.src}
-                data-index = {index}
-                onClick={On_Click}
-            />)
-        default:
-            break;
+                </text>
+            </>)
     }
     return <></>
 }
 
-/*
-const ADD_SLIDE = 'ADD_SLIDE'
-<button className='IconButton Icon' onClick={()=>props.addSlide()}></button>
-addSlide: () => dispatch({type: ADD_SLIDE})
-switch (action.type) {
-    case actionTypes.ADD_SLIDE:
-        return addSlide(state)    
-}
-
-const dispatchOne = (dispatch: Dispatch<any>) => {
-    return {
-        addSlide: () => dispatch({type: ADD_SLIDE}),
-        backgroundPicture: (e: React.ChangeEvent<HTMLInputElement>) => backgroundPicture(e, dispatch),
-        deleteSlide: () => dispatch({type: DELETE_SLIDE})
+function Image_SVG(props:
+{
+    element: Element,
+    index: number,
+    on_click: React.MouseEventHandler<SVGElement>
+}): JSX.Element
+{
+    let element = props.element
+    let index = props.index
+    let On_Click = props.on_click
+    if(element.data.type == TypeElement.Image){
+        return (<image
+            x = {element.position.x}
+            y = {element.position.y}
+            href = {element.data.src}
+            data-index = {index}
+            data-uid = {element.id}
+            onClick = {On_Click}
+        />)
     }
+    return <></>
 }
-
-const mapDispatchToProps = (dispatch: Dispatch<any>) => {
-    return {
-        addText: (text: string) => dispatch({type: Action.ADD_TEXT, payload: text}),
-        addPrimitiveCircle: () => dispatch({type: Action.ADD_PRIMITIVE_CIRCLE}),
-        addPrimitiveRectangle: () => dispatch({type: Action.ADD_PRIMITIVE_RECTANGLE}),
-        addPrimitiveTriangle: () => dispatch({type: Action.ADD_PRIMITIVE_TRIANGLE}),
-        changePresentationName: (newName: string) => dispatch({type: Action.CHANGE_NAME, payload: newName}),
-        createPresentation: () => dispatch({type: Action.CREATE_PRESENTATION}),
-        openLocalPresentation: (e: React.ChangeEvent<HTMLInputElement>) => openLocalPresentation(e, dispatch),
-        undo: () => dispatch({type: Action.UNDO}),
-        redo: () => dispatch({type: Action.REDO}),
-        changeTextSize: (newTextSize: string) => dispatch({type: Action.TEXT_SIZE, payload: newTextSize}),
-        changeFont: (font: string) => dispatch({type: Action.CHANGE_FONT, payload: font}),
-        changeTextAlign: (align: string) => dispatch({type: Action.CHANGE_TEXT_ALIGN, payload: align}),
-        changeTextBold: () => dispatch({type: Action.TEXT_BOLD}),
-        changeTextItalic: () => dispatch({type: Action.TEXT_ITALIC}),
-        changeTextUnderline: () => dispatch({type: Action.TEXT_UNDERLINE}),
-        openPicture: (e: React.ChangeEvent<HTMLInputElement>) => openPicture(e, dispatch),
-        showPresentation: (b: boolean) => dispatch({type: Action.SHOW_STOP_PRESENTATION, payload: b}) 
-    } 
-}
-
-const mapStateToProps = (state: Presentation) => {
-    return {state: state}
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(WorkArea)
-export default connect(mapStateToProps, mapDispatchToProps)(ButtonsBlock)
-*/

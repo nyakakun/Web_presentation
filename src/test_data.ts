@@ -9,7 +9,7 @@ export var app: App = {
 				id: uuidv4(),
 				background: {
 					src: '',
-					color: '000000',
+					color: '#ffffaa',
 				},
 				elements: [
 					{
@@ -25,7 +25,7 @@ export var app: App = {
 						data:{
 							type: TypeElement.Text,
 							text: 'nyaharo',
-							text_color: '000000',
+							text_color: '#000000',
 							font: 'Arial',
 							font_size: 30,
 						},
@@ -52,7 +52,7 @@ export var app: App = {
 				id: uuidv4(),
 				background: {
 					src: '',
-					color: '000000',
+					color: '#ffaaaa',
 				},
 				elements: [
 					{
@@ -67,9 +67,9 @@ export var app: App = {
 						},
 						data:{
 							type: TypeElement.Figure,
-							border_color: '000000',
+							border_color: '#000000',
 							border_size: 5,
-							background_color: 'ffffff',
+							background_color: '#ffffff',
 							figure_type: FigureType.Circle
 						},
 					},
@@ -80,14 +80,14 @@ export var app: App = {
 							w: 300,
 						},
 						position: {
-							x: 0,
-							y: 0,
+							x: 500,
+							y: 500,
 						},
 						data:{
 							type: TypeElement.Figure,
-							border_color: '000000',
+							border_color: '#000000',
 							border_size: 5,
-							background_color: 'ffffff',
+							background_color: '#ffffff',
 							figure_type: FigureType.Rectangle
 						},
 					},
@@ -98,14 +98,14 @@ export var app: App = {
 							w: 300,
 						},
 						position: {
-							x: 0,
-							y: 0,
+							x: 500,
+							y: 500,
 						},
 						data:{
 							type: TypeElement.Figure,
-							border_color: '000000',
+							border_color: '#000000',
 							border_size: 5,
-							background_color: 'ffffff',
+							background_color: '#ffffff',
 							figure_type: FigureType.Triangle
 						},
 					},
@@ -113,7 +113,7 @@ export var app: App = {
 				active_elements: [],
 			},
 		],
-		select_slides:[0],
+		select_slides:[1],
 	},
 	command_history: {
 		history: [],

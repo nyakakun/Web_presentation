@@ -1,27 +1,29 @@
 import React, { BaseSyntheticEvent, useEffect, useRef, useState } from 'react';
-import './Application.css';
-import {app} from './test_data'
+import './css/Application.css';
+//import {app} from './test_data'
 import { App, Element, FigureObj, FigureType, Position, Size, TypeElement } from './Types';
 import { SlideSVG } from './viewers/Slide';
-import { Config } from './viewers/Config';
+import { Config, GetPanelType } from './viewers/Config';
 import { Menu } from './viewers/Menu';
 import { SlideList } from './viewers/SlideList';
 
-function Application(app: App) {
+export 
+
+function Application(props: {app: App}) {
     return (
         <>
             <div id="Menu">
-                <Menu app={app}/>
+                <Menu app={props.app} />
             </div>
             <div className='Presentation'>
                 <div id="SlideList">
-                    {SlideList(app.presentation)}
+                    <SlideList app={props.app} />
                 </div>
                 <div id="SlideWiew">
-                    {SlideSVG(app)}
+                    <SlideSVG app={props.app} />
                 </div>
                 <div id="Config">
-                    {Config(app)}
+                    <Config app={props.app} type_panel={GetPanelType(props.app.presentation.slide_list[props.app.presentation.select_slides[0]])}/>
                 </div>
             </div>
         </>
@@ -29,22 +31,3 @@ function Application(app: App) {
 }
 
 export default Application
-    /*return (
-        <>
-            <div id="Menu">
-                <Menu app={app}/>
-            </div>
-            <div className='Presentation'>
-                <div id="SlideList">
-                    {SlideList(app.presentation)}
-                </div>
-                <div id="SlideWiew">
-                    {SlideSVG(app)}
-                </div>
-                <div id="Config">
-                    {Config(app)}
-                </div>
-            </div>
-        </>
-    );*/
-    

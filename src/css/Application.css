@@ -1,0 +1,27 @@
+.Menu{
+  padding: 15px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr) 10fr;
+  grid-template-rows: 25px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.Presentation{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#SlideList{
+  width: 15%;
+}
+
+#SlideWiew{
+  width: 70%;
+}
+
+#Config{
+  width: 15%;
+}

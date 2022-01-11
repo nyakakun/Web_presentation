@@ -4,10 +4,10 @@ import { Presentation, Slide, Size, Position, Element, Background, TypeElement, 
  * @param {string} name
  * @return {Presentation} 
  */
- export function Change_Name(presentation: Presentation, name: string): Presentation {
-    return {
-        ...presentation, presentation_name: name
-    }
+ export function Change_Name(presentation: Presentation, name: string) {
+    
+    presentation.presentation_name = name
+    
 }
 
 /**
@@ -16,15 +16,7 @@ import { Presentation, Slide, Size, Position, Element, Background, TypeElement, 
  * @return {Presentation}
  */
 export function Add_Slide(presentation: Presentation, new_slide: Slide) {
-
-    let temp_presentation: Presentation = {...presentation}
-    let temp_slide_list: Slide[] = [...temp_presentation.slide_list, new_slide]
-    
-    temp_presentation.slide_list = temp_slide_list
-
-    return {
-        ...temp_presentation
-    }
+    presentation.slide_list.push(new_slide)
 }
 
 /**
@@ -32,24 +24,12 @@ export function Add_Slide(presentation: Presentation, new_slide: Slide) {
  * @param {number} slide
  * @return {Presentation}
  */
-export function Delete_Slide(presentation: Presentation): Presentation {
-
-    let temp_presentation: Presentation = {...presentation}
-    let temp_slide_list: Slide[] = []
-    temp_presentation.slide_list.forEach(
-        function(item, index){
-            if(temp_presentation.select_slides.indexOf(index) < 0){
-                temp_slide_list.push(item)
-            }
+export function Delete_Slide(presentation: Presentation) {
+    presentation.select_slides.forEach(
+        function(item){
+            presentation.slide_list.splice(item, 1)
         }
     )
-    temp_presentation.slide_list = temp_slide_list
-    temp_presentation.select_slides = []
-
-    return{
-        ...temp_presentation
-    }
-
 }
 
 /**
@@ -59,15 +39,14 @@ export function Delete_Slide(presentation: Presentation): Presentation {
  */
 export function Move_Slide(presentation: Presentation, new_pos: number) {
     function Compare(a: number, b: number) {if(a > b){return 1} else if(a == b){return 0} else {return -1}}
-    let temp_presentation: Presentation = {...presentation}
-    let temp_select_slides: number[] = [...temp_presentation.select_slides].sort(Compare)
+    let temp_select_slides: number[] = presentation.select_slides.sort(Compare)
     let temp_slide_list: Slide[] = []
-    temp_presentation.slide_list.forEach(
+    presentation.slide_list.forEach(
         function(item, index){
             if(new_pos == index){
                 temp_select_slides.forEach(
                     function(item){
-                        temp_slide_list.push(temp_presentation.slide_list[item])
+                        temp_slide_list.push(presentation.slide_list[item])
                     }
                 )
             }
@@ -76,6 +55,7 @@ export function Move_Slide(presentation: Presentation, new_pos: number) {
             }
         }
     )
+    presentation.slide_list = temp_slide_list
 } 
 
 /**
@@ -83,10 +63,8 @@ export function Move_Slide(presentation: Presentation, new_pos: number) {
  * @param {number[]} target_slide
  * @return {Presentation}
  */
-export function Change_Select_Slide(presentation: Presentation, target_slide: number[]) {
-    return{
-        ...presentation, select_slides: target_slide
-    }
+export function Change_Select_Slide(presentation: Presentation, target_slide: number) {
+    presentation.select_slides = [target_slide]
 }
 
 

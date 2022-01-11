@@ -5,24 +5,12 @@ import { Presentation, Slide, Size, Position, Element, Background, TypeElement, 
  * @param {string} new_color
  * @return {Presentation}
  */
- export function Change_Background_Color_Slide(presentation: Presentation, new_color: string): Presentation {
-    console.log('HUITA')
-    let temp_presentation: Presentation = {...presentation}
-    let temp_slide_list: Slide[] = [...temp_presentation.slide_list]
-    temp_presentation.select_slides.forEach(
+export function Change_Background_Color_Slide(presentation: Presentation, new_color: string){
+    presentation.select_slides.forEach(
         function(item) {
-            let temp_slide: Slide = {...temp_slide_list[item]}
-            let temp_background: Background = {...temp_slide.background, color: new_color}
-            temp_slide.background = temp_background
-            temp_slide_list[item] = temp_slide
+            presentation.slide_list[item].background.color = new_color
         }
     )
-    temp_presentation.slide_list = temp_slide_list
-
-    return{
-        ...temp_presentation
-    }
-    
 }
 
 /**
@@ -30,24 +18,12 @@ import { Presentation, Slide, Size, Position, Element, Background, TypeElement, 
  * @param {string} new_src
  * @return {Presentation}
  */
-export function Change_Background_Image_Slide(presentation: Presentation, new_src: string) {
-   
-    let temp_presentation: Presentation = {...presentation}
-    let temp_slide_list: Slide[] = [...temp_presentation.slide_list]
-    temp_presentation.select_slides.forEach(
+export function Change_Background_Image_Slide(presentation: Presentation, new_src: string){
+    presentation.select_slides.forEach(
         function(item) {
-            let temp_slide: Slide = {...temp_slide_list[item]}
-            let temp_background: Background = {...temp_slide.background, src: new_src}
-            temp_slide.background = temp_background
-            temp_slide_list[item] = temp_slide
+            presentation.slide_list[item].background.src = new_src
         }
     )
-    temp_presentation.slide_list = temp_slide_list
-
-    return{
-        ...temp_presentation
-    }
-    
 }
 
 /**
@@ -76,27 +52,13 @@ export function Add_Element(presentation: Presentation, element: Element): Prese
  * @param {Presentation} presentation
  * @return {Presentation}
  */
-export function Delete_Elements(presentation: Presentation): Presentation {
-
-    let temp_presentation: Presentation = {...presentation}
-    let temp_slide_list: Slide[] = [...temp_presentation.slide_list]
-    let temp_slide: Slide = {...temp_slide_list[temp_presentation.select_slides[0]]}
-    let temp_elements: Element[] = []
-    temp_slide.elements.forEach(
+export function Delete_Elements(presentation: Presentation) {
+    presentation.slide_list[presentation.select_slides[0]].active_elements.forEach(
         function(item, index){
-            if(temp_slide.active_elements.indexOf(index) < 0){
-                temp_elements.push(item)
-            }
+            presentation.slide_list[presentation.select_slides[0]].elements.splice(item, 1)
         }
     )
-    temp_slide.elements = temp_elements
-    temp_slide_list[temp_presentation.select_slides[0]] = temp_slide
-    temp_presentation.slide_list = temp_slide_list
-    temp_slide.active_elements = []
-
-    return{
-        ...temp_presentation
-    }
+    presentation.slide_list[presentation.select_slides[0]].active_elements = []
 }
 
 /**
